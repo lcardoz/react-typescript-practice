@@ -1,3 +1,5 @@
+import styles from './Button.module.css';
+
 interface Props {
   children: string;
   // add ? to indicate this property is optional; 
@@ -10,7 +12,8 @@ interface Props {
 const Button = ({ children, onClick, color = 'primary' }: Props) => {
   return (
     <button
-      className={"btn btn-" + color}
+    // className is array that references 2 objects (btn + specific color) calculate property name dynamically and add color prop after:
+      className={[styles.btn, styles['btn-' + color]].join(' ')}
       onClick={onClick}
     >
       {children}
