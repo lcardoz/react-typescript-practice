@@ -1,5 +1,22 @@
 import { useState } from "react";
-import styles from './ListGroup.module.css'; //importing styles a POJO that has all the classes and properties defined in the css module file
+import "./ListGroup.css";
+import styled from "styled-components"; // importing styled object to create styled components
+
+// defining all styles for ul, return value of this is a react component with all these styles applied to it, store in component called List:
+const List = styled.ul`
+  list-style: none;
+  padding: 0;
+`;
+
+interface ListItemProps {
+  active: boolean;
+}
+
+//add <> and pass interface that represents the shape of Props, ListItemProps:
+const ListItem = styled.li<ListItemProps>`
+  padding: 5px 0;
+  background: ${ props => props.active ? 'blue' : 'none'}
+`;
 
 // { items: array of strings, heading: string } :
 interface Props {
@@ -10,31 +27,26 @@ interface Props {
 }
 
 function ListGroup({ items, heading, onSelectItem }: Props) {
-  const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   return (
     <>
       <h1>{heading}</h1>
       {items.length === 0 && <p>No item found</p>}
-      {/* multiple styles in array that are joined: */}
-      <ul className={[styles.listGroup, styles.container].join(' ')}>
+      <List>
         {items.map((item, index) => (
-          <li
+          <ListItem
+            active={index === selectedIndex}
             key={item}
-            className={
-              selectedIndex === index
-                ? "list-group-item active"
-                : "list-group-item"
-            }
             onClick={() => {
               setSelectedIndex(index);
               onSelectItem(item);
             }}
           >
             {item}
-          </li>
+          </ListItem>
         ))}
-      </ul>
+      </List>
     </>
   );
 }
