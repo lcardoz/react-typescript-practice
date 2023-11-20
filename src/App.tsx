@@ -1,34 +1,13 @@
-import { useState } from "react";
+import ExpandableText from "./components/ExpandableText";
 
 function App() {
-  const [cart, setCart] = useState({
-    discount: 0.1,
-    items: [
-      { id: 1, title: "Apples", quantity: 1 },
-      { id: 2, title: "Oranges", quantity: 1 },
-    ],
-  });
-
-  const handleClick = () => {
-    setCart({
-      ...cart,
-      items: cart.items.map((item) =>
-        item.id === 1 ? { ...item, quantity: item.quantity + 1 } : item
-      ),
-    });
-  };
 
   return (
     <>
-      <h1>Cart</h1>
-      <ul>
-        {cart.items.map((item) => (
-          <li key={item.id}>
-            {item.title} {item.quantity}
-          </li>
-        ))}
-      </ul>
-      <button onClick={handleClick}>+ Quantity</button>
+      <ExpandableText>
+        {/* // lorem100  generates 100 characters of lorem ipsum text*/}
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi velit explicabo ullam ut perspiciatis consectetur quasi dicta sit unde necessitatibus a repudiandae dignissimos officia, quod eos, corrupti nemo mollitia temporibus quibusdam blanditiis sunt ipsum sed! Dolores nam quisquam quas eos quasi, necessitatibus aliquam quis suscipit nostrum assumenda aspernatur sunt rerum. Consequatur esse alias, minima doloremque facilis nesciunt aspernatur nam voluptates voluptatem aperiam deserunt labore. Nam modi ipsa quis harum dolore magnam aut molestiae quam reprehenderit? Aliquam dolores voluptatum inventore cumque vitae sint voluptas veniam corporis totam, unde porro minima incidunt dicta illo non ratione. Expedita omnis eaque quia saepe cumque.
+      </ExpandableText>
     </>
   );
 }
