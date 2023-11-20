@@ -9,8 +9,13 @@ const Like = ({ onClick }: Props) => {
 
   const [liked, setLiked] = useState(false);
 
-  if (liked ) return <AiFillHeart size="20px" color="#ff6b81" onClick={() => setLiked(false)}/>
-  return <AiOutlineHeart size="20px" onClick={() => setLiked(true)}/>
+  const toggle = () => {
+    setLiked(!liked);
+    onClick();
+  }
+
+  if (liked ) return <AiFillHeart size="20px" color="#ff6b81" onClick={toggle}/>
+  return <AiOutlineHeart size="20px" onClick={toggle}/>
 
 };
 
