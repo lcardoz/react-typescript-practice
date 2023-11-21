@@ -1,6 +1,14 @@
+import { FormEvent } from "react";
+
 const Form = () => {
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    console.log('submitted')
+  }
+
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       {/* shortcut to generate code: div.mb-3>label.form-label+input.form-control + tab */}
       {/* mb-3= margin bottom-3 (utility class in bootstrap) */}
       <div className="mb-3">
