@@ -1,21 +1,14 @@
-import { FormEvent, useRef } from "react";
+import { FormEvent, useState } from "react";
 
 const Form = () => {
 
-  // initialize every ref object with null bc current prop references a dom node, but we dont have access to dom nodes until react renders component, so we initialize with null:
-  const nameRef = useRef<HTMLInputElement>(null);
-  const ageRef = useRef<HTMLInputElement>(null);
-  const person = { name: '', age: 0 };
+  const [person, setPerson] = useState({
+    name: '',
+    age: '',
+  })
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-
-    if (nameRef.current !== null)
-      person.name = nameRef.current.value;
-
-    if (ageRef.current !== null)
-      person.age = parseInt(ageRef.current.value);
-
     console.log(person)
   }
 
@@ -27,11 +20,11 @@ const Form = () => {
         <label htmlFor="name" className="form-label">
           Name
         </label>
-        <input ref={nameRef} id="name" type="text" className="form-control" />
+        <input onChange={(e) => setPerson({...person, name: e.target.value})} value={person.name} id="name" type="text" className="form-control" />
       </div>
       <div className="mb-3">
         <label htmlFor="age" className="form-label">Age</label>
-        <input ref={ageRef} id="age" type="number" className="form-control" />
+        <input onChange={(e) => setPerson({...person, age: e.target.value})} value={person.age} id="age" type="number" className="form-control" />
       </div>
       {/* shortcut to generate code: button.btn.btn-primary + tab */}
       <button className="btn btn-primary" type="submit">Submit</button>
