@@ -15,18 +15,13 @@ const schema = z.object({
 // remove FormData interface and call z.infer and <typeof schema> which returns a typescript type which is similar to a typescript interface:
 type FormData = z.infer<typeof schema>;
 
-// so we can see properties of errors object in auto completion, and for type safety:
-// interface FormData {
-//   name: string;
-//   age: number;
-// }
-
 const Form = () => {
   // destructuring form object and grabbing register function, with nested destructuring of formState; pass in our interface:
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    // use isValid prop to see if form is valid(complete):
+    formState: { errors, isValid },
     // pass configuration object and set resolver to zodResolver function which we call and pass our schema objec:
   } = useForm<FormData>({ resolver: zodResolver(schema) });
 
@@ -34,28 +29,18 @@ const Form = () => {
   const onSubmit = (data: FieldValues) => console.log(data);
 
   return (
-    // <form onSubmit={handleSubmit((data) => console.log(data))}> // change to below:
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
           Name
         </label>
         <input
-          // validations: react-hook-form only calls handler function if form is valid:
-          // {...register("name", { required: true, minLength: 2 })}
           // remove validation rules here while registering this field bc theyre now defined in our schema:
           {...register("name")}
           id="name"
           type="text"
           className="form-control"
         />
-        {/* need ? after name: optional chaining, in case errors object is empty:  */}
-        {/* {errors.name?.type === "required" && (
-          <p className="text-danger">The name field is required.</p>
-        )}
-        {errors.name?.type === "minLength" && (
-          <p className="text-danger">The name must be at least 2 characters.</p>
-        )} */}
         {/* zod takes care of rendering error messages based on the schema that we defined above, only need one error message which can be rendered dynamically */}
         {errors.name && <p className="text-danger">{errors.name.message}</p>}
       </div>
@@ -72,7 +57,8 @@ const Form = () => {
         />
         {errors.age && <p className="text-danger">{errors.age.message}</p>}
       </div>
-      <button className="btn btn-primary" type="submit">
+      {/* disable button if form is not valid: */}
+      <button disabled={!isValid} className="btn btn-primary" type="submit">
         Submit
       </button>
     </form>
