@@ -5,10 +5,12 @@ import categories from "../categories";
 
 // validations: call z.object() to create our schema and store it in a const w/ 3 fields:
 const schema = z.object({
-  description: z.string().min(3).max(50),
-  amount: z.number().min(0.01).max(100_000),
+  description: z.string().min(3, {message: 'Description should be at least 3 characters.'}).max(50),
+  amount: z.number({ invalid_type_error: 'Amount is required.'}).min(0.01).max(100_000),
   // in App, we added 'as const' to make the categories array read-only:
-  category: z.enum(categories),
+  category: z.enum(categories, {
+    errorMap: () => ({message: "Category is required."})
+  }),
 });
 
 type ExpenseFormData = z.infer<typeof schema>;
@@ -22,7 +24,7 @@ const ExpenseForm = () => {
   } = useForm<ExpenseFormData>({ resolver: zodResolver(schema) });
 
   return (
-    <form>
+    <form onSubmit={handleSubmit(data => console.log(data))}>
       <div className="mb-3">
         <label htmlFor="description" className="form-label">
           Description
@@ -42,7 +44,7 @@ const ExpenseForm = () => {
           Amount
         </label>
         <input
-          {...register("amount")}
+          {...register("amount", { valueAsNumber: true })}
           id="amount"
           type="number"
           className="form-control"
