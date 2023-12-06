@@ -5,7 +5,7 @@ import ExpenseForm from "./expense-tracker/components/ExpenseForm";
 import categories from "./expense-tracker/categories";
 
 function App() {
-  
+
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [expenses, setExpenses] = useState([
@@ -22,7 +22,7 @@ function App() {
   return (
     <>
       <div className="mb-5">
-        <ExpenseForm />
+        <ExpenseForm onSubmit={expense => setExpenses([...expenses, {... expense, id: expenses.length +1}])} />
       </div>
       <div className="mb-3">
         <ExpenseFilter
