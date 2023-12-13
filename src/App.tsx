@@ -1,40 +1,25 @@
-import { useState } from "react";
-import ExpenseList from "./expense-tracker/components/ExpenseList";
-import ExpenseFilter from "./expense-tracker/components/ExpenseFilter";
-import ExpenseForm from "./expense-tracker/components/ExpenseForm";
-import categories from "./expense-tracker/categories";
+import { useEffect, useRef } from "react";
 
 function App() {
 
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const ref = useRef<HTMLInputElement>(null);
 
-  const [expenses, setExpenses] = useState([
-    { id: 1, description: "abc", amount: 10, category: "Utilities" },
-    { id: 2, description: "def", amount: 10, category: "Utilities" },
-    { id: 3, description: "ghi", amount: 10, category: "Utilities" },
-    { id: 4, description: "jkl", amount: 10, category: "Utilities" },
-  ]);
+  // useEffect = after render: function inside is called after each render (put any code that causes side effects in here)
+  // can only call useEffect at top level of components (App), can call multiple times for different purposes
+  useEffect(() => {
+    // Side effect: ref.current.focus() changes the state of the DOM outside of the component, component is no longer pure; 
+    // need to put code inside useEffect to make pure
+    if (ref.current) ref.current.focus();
+  })
 
-  const filteredExpenses = selectedCategory
-    ? expenses.filter((expense) => expense.category === selectedCategory)
-    : expenses;
+  useEffect(() => {
+    document.title = 'My App';
+  })
+  
 
   return (
     <>
-      <div className="mb-5">
-        <ExpenseForm onSubmit={expense => setExpenses([...expenses, {... expense, id: expenses.length +1}])} />
-      </div>
-      <div className="mb-3">
-        <ExpenseFilter
-          onSelectCategory={(category) => setSelectedCategory(category)}
-        />
-      </div>
-      <ExpenseList
-        expenses={filteredExpenses}
-        onDelete={(id) =>
-          setExpenses(expenses.filter((expense) => expense.id !== id))
-        }
-      />
+      <input ref={ref} type="text" className="form-control" />
     </>
   );
 }
